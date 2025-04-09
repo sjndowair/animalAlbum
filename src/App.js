@@ -9,6 +9,7 @@ export default function App($app) {
   };
 
   const tabBar = new TabBar({
+    $app,
     initialState: "",
     onClick: (name) => {
       this.setState({
