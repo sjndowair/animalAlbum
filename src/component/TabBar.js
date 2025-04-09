@@ -15,6 +15,15 @@ export default function TabBar({ $app, initialState, onClick }) {
 
   this.render = () => {
     this.$target.innerHTML = this.template();
+    let $currentTab = document.getElementById(this.state);
+    $currentTab && ($currentTab.className = "clicked");
+    let $tabBar = this.$target.querySelectorAll("div");
+    console.log($tabBar);
+    $tabBar.forEach((tabBtn) => {
+      tabBtn.addEventListener("click", () => {
+        this.onClick(tabBtn.id);
+      });
+    });
   };
 
   this.setState = (newState) => {
