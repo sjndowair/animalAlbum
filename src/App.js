@@ -1,6 +1,6 @@
+import { request } from "./component/api.js";
 import Content from "./component/Content.js";
 import TabBar from "./component/TabBar.js";
-import { request } from "./component/api.js";
 
 export default function App($app) {
   this.state = {
@@ -10,19 +10,18 @@ export default function App($app) {
 
   const tabBar = new TabBar({
     $app,
-    initialState: "",
-    onClick: async (name) => {
+    initialState: this.state.currentTab,
+    onClick: async (item) => {
       this.setState({
         ...this.state,
-        currentTab: name,
-        photos: await request(name === "all" ? "" : name),
+        currentTab: item,
+        photos: await request(),
       });
     },
   });
-
   const content = new Content({
     $app,
-    initialState: [],
+    initialState: this.state.photos,
   });
 
   this.setState = (newState) => {
@@ -30,18 +29,4 @@ export default function App($app) {
     tabBar.setState(this.state.currentTab);
     content.setState(this.state.photos);
   };
-
-  const init = async () => {
-    try {
-      const initialPhotos = await request();
-      this.setState({
-        ...this.state,
-        photos: initialPhotos,
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  init();
 }
